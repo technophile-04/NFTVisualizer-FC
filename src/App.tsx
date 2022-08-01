@@ -1,4 +1,5 @@
 import React from 'react';
+import { Cards } from './sections';
 
 const App = () => {
 	return (
@@ -13,6 +14,7 @@ const App = () => {
 				</p>
 			</div>
 			{/* Cards Sections (Container) */}
+			<Cards />
 		</div>
 	);
 };

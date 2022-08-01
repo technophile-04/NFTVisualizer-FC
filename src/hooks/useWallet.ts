@@ -1,8 +1,7 @@
 import { MetaMaskInpageProvider } from '@metamask/providers';
 import { ethers } from 'ethers';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
-
 declare global {
 	interface Window {
 		ethereum?: MetaMaskInpageProvider;
@@ -10,10 +9,15 @@ declare global {
 }
 
 export const useWallet = () => {
-	const [currentAccount, setCurrentAccount] = useState('');
+	const [currentAccount, setCurrentAccount] = useState<
+		string | undefined | null
+	>('');
+	const ARB_RPC_URL = 'https://arb1.arbitrum.io/rpc';
+	const [isCorrectNetwork, setIsCorrectNetwork] = useState<Boolean>(false);
+	const [chainId, setChainId] = useState<number>(0);
 
 	// --------------------------------------------------
-	// Ask to connect metamask
+	// Change network
 	// --------------------------------------------------
 	const changeNetwork = async () => {
 		if (window.ethereum) {
@@ -28,14 +32,14 @@ export const useWallet = () => {
 						method: 'wallet_addEthereumChain',
 						params: [
 							{
-								chainName: 'Polygon testnet',
-								chainId: ethers.utils.hexValue(80001),
+								chainName: 'Arbitrum',
+								chainId: ethers.utils.hexValue(42161),
 								nativeCurrency: {
-									name: 'MATIC',
+									name: 'AETH',
 									decimals: 18,
-									symbol: 'MATIC',
+									symbol: 'AETH',
 								},
-								rpcUrls: ['https://rpc-mumbai.matic.today'],
+								rpcUrls: [ARB_RPC_URL],
 							},
 						],
 					});
@@ -47,6 +51,9 @@ export const useWallet = () => {
 		}
 	};
 
+	// --------------------------------------------------
+	// Ask to connect metamask
+	// --------------------------------------------------
 	const connectWallet = async () => {
 		const ethereum = window.ethereum!;
 		try {
@@ -103,4 +110,31 @@ export const useWallet = () => {
 			throw new Error(error.message);
 		}
 	};
+
+	useEffect(() => {
+		const ethereum = window.ethereum;
+		if (ethereum) {
+			const getChain = async () => {
+				// @ts-ignore
+				const provider = new ethers.providers.Web3Provider(ethereum);
+				// @ts-ignore
+				const { chainId } = await provider.getNetwork(provider);
+				console.log('CHAIN ID : ', chainId);
+				setIsCorrectNetwork(chainId === 42161);
+				setChainId(chainId);
+			};
+
+			ethereum.on('accountsChanged', (...accounts: unknown[]) => {
+				console.log('accounts cahnged');
+				setCurrentAccount(accounts[0] as string);
+			});
+			ethereum.on('chainChanged', function (networkId) {
+				window.location.reload();
+			});
+			checkIfWalletIsConnected();
+			getChain();
+		}
+	}, []);
+
+	return { currentAccount, connectWallet, isCorrectNetwork, ARB_RPC_URL };
 };
