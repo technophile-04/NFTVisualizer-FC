@@ -9,7 +9,7 @@ export const Home = () => {
 					Patrick's Hardhat FreeCodeCamp Collection
 				</p>
 				<p className="text-gray-400 m-1 mt-0 text-center">
-					NFT's from best blockchain course
+					NFT's from one of the best blockchain course
 				</p>
 				<Form />
 			</div>

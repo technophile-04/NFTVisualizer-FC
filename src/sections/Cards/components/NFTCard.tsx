@@ -1,12 +1,13 @@
 import React from 'react';
-import { Metadata } from '../../../utils';
+import { Metadata, truncateEthAddress } from '../../../utils';
 interface Props {
 	nft: Metadata;
 	toggleModal: Function;
+	ownerAddress: string;
 }
 
 const NftCard = (props: Props) => {
-	const { nft, toggleModal } = props;
+	const { nft, toggleModal, ownerAddress } = props;
 	return (
 		<div
 			className="gradient-bg-card rounded-lg m-h-64 p-2 transform hover:translate-y-2 hover:shadow-xl transition duration-300 cursor-pointer"
@@ -26,7 +27,7 @@ const NftCard = (props: Props) => {
 				</div>
 				<div className="flex items-center mt-2">
 					<div className="text-xs text-gray-200  bg-black rounded-lg px-2 py-[0.1rem]">
-						Owned By You{' '}
+						Owned By {truncateEthAddress(ownerAddress)}
 					</div>
 				</div>
 			</div>
