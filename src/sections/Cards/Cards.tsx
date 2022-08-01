@@ -8,6 +8,7 @@ import {
 	getSolidityBasicsCollection,
 	Metadata,
 } from '../../utils';
+import { CardsLoader } from './components';
 import Modal from './components/Modal';
 import NftCard from './components/NFTCard';
 
@@ -15,9 +16,11 @@ export const Cards = () => {
 	const [nfts, setNfts] = useState<Metadata[]>([]);
 	const [showModal, setShowModal] = useState<Boolean>(false);
 	const { currentAccount, connectWallet } = useWallet();
+	const [loading, setLoading] = useState(false);
 	const [selectedNft, setSelectedNft] = useState<number>(-1);
 
 	const fetchNFTs = async (userAddress: string) => {
+		setLoading(true);
 		const finalNFTs: Metadata[] = [];
 		const remainingNFTs: string[] = [];
 
@@ -65,6 +68,7 @@ export const Cards = () => {
 
 		setNfts(finalNFTs);
 		console.log('[finalNFTs]', finalNFTs);
+		setLoading(false);
 	};
 
 	function toggleModal(i: number) {
@@ -82,13 +86,17 @@ export const Cards = () => {
 
 	return (
 		<div className="grid grid-cols-4 gap-6 justify-center max-w-6xl gap-x-6 gap-y-10 my-10">
-			{nfts?.map((nft, index) => (
-				<NftCard
-					nft={nft}
-					key={index + nft.name}
-					toggleModal={() => toggleModal(index)}
-				/>
-			))}
+			{true ? (
+				<CardsLoader />
+			) : (
+				nfts?.map((nft, index) => (
+					<NftCard
+						nft={nft}
+						key={index + nft.name}
+						toggleModal={() => toggleModal(index)}
+					/>
+				))
+			)}
 			{showModal && (
 				<Modal nft={nfts[selectedNft]} toggleModal={() => toggleModal(-1)} />
 			)}
