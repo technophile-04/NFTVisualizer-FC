@@ -54,10 +54,11 @@ export const getFullStackCollection = async (
 		console.log(result);
 		const imageHash = result.image.substring(7);
 		const imageURL = `https://ipfs.infura.io/ipfs/${imageHash}`;
+		const nameArr = result.name.split('| ');
 
 		console.log(imageURL);
 
-		return { ...result, image: imageURL };
+		return { ...result, image: imageURL, name: nameArr[1].trim() };
 	} else {
 		return null;
 	}
@@ -85,10 +86,11 @@ export const getHardhatBasicCollection = async (
 		console.log(result);
 		const imageHash = result.image.substring(7);
 		const imageURL = `https://ipfs.infura.io/ipfs/${imageHash}`;
+		const nameArr = result.name.split('| ');
 
 		console.log(imageURL);
 
-		return { ...result, image: imageURL };
+		return { ...result, image: imageURL, name: nameArr[1].trim() };
 	} else {
 		return null;
 	}
@@ -117,10 +119,11 @@ export const getCourseCompleteCollection = async (
 		console.log(result);
 		const imageHash = result.image.substring(7);
 		const imageURL = `https://ipfs.infura.io/ipfs/${imageHash}`;
+		const nameArr = result.name.split('| ');
 
 		console.log(imageURL);
 
-		return { ...result, image: imageURL };
+		return { ...result, image: imageURL, name: nameArr[1].trim() };
 	} else {
 		return null;
 	}
@@ -149,10 +152,11 @@ export const getBlockchainBasicsCollection = async (
 		console.log(result);
 		const imageHash = result.image.substring(7);
 		const imageURL = `https://ipfs.infura.io/ipfs/${imageHash}`;
+		const nameArr = result.name.split('| ');
 
 		console.log(imageURL);
 
-		return { ...result, image: imageURL };
+		return { ...result, image: imageURL, name: nameArr[1].trim() };
 	} else {
 		return null;
 	}
@@ -177,14 +181,14 @@ export const getSolidityBasicsCollection = async (
 		const tokenURI = await solidityBasicsCollection.tokenURI(1);
 
 		const json = atob(tokenURI.substring(29));
-		const result = JSON.parse(json);
+		const result = JSON.parse(json) as Metadata;
 		console.log(result);
 		const imageHash = result.image.substring(7);
 		const imageURL = `https://ipfs.infura.io/ipfs/${imageHash}`;
-
+		const nameArr = result.name.split('| ');
 		console.log(imageURL);
 
-		return { ...result, image: imageURL };
+		return { ...result, image: imageURL, name: nameArr[1].trim() };
 	} else {
 		return null;
 	}
