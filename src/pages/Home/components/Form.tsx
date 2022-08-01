@@ -2,7 +2,9 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 export const Form = () => {
-	const [currentAddress, setCurrentAddress] = useState('');
+	const [currentAddress, setCurrentAddress] = useState(
+		'0x1A2d838c4bbd1e73d162d0777d142c1d783Cb831'
+	);
 
 	return (
 		<div className="mx-auto flex items-center justify-center mt-10" role="img">
