@@ -17,11 +17,24 @@ export const Form = () => {
 					value={currentAddress}
 					onChange={(e) => setCurrentAddress(e.target.value)}
 				/>
-				<Link to={`address/${currentAddress}`} className="inline-block w-full">
-					<button className="text-white w-full border-[1px] p-2 border-[#433d7c] transition-all ease-out duration-500  hover:bg-[#433d7c] rounded-3xl cursor-pointer font-semibold inline-block">
-						Fetch NFT's
+				{currentAddress.trim().length === 0 ||
+				!currentAddress.startsWith('0x') ? (
+					<button
+						className="text-white w-full border-[1px] p-2 border-[#433d7c] transition-all ease-out duration-500  hover:bg-[#433d7c] rounded-3xl cursor-pointer font-semibold inline-block"
+						disabled={true}
+					>
+						enter a valid address
 					</button>
-				</Link>
+				) : (
+					<Link
+						to={`address/${currentAddress.trim()}`}
+						className="inline-block w-full"
+					>
+						<button className="text-white w-full border-[1px] p-2 border-[#433d7c] transition-all ease-out duration-500  hover:bg-[#433d7c] rounded-3xl cursor-pointer font-semibold inline-block">
+							Fetch NFT's
+						</button>
+					</Link>
+				)}
 			</div>
 		</div>
 	);
